@@ -1,0 +1,28 @@
+{ 
+    "ancianos":
+    {
+    "Freddy Velazco": "Grupo 1",
+    "Edwin Encalada": "Grupo 2",
+    "Luis Chamorro": "Grupo 3",
+    "Manuel Vizcaino": "Grupo 4",
+    "Marcelo Moreano": "Grupo 5",
+    "Rolando Moreano": "Grupo 6",   
+    "Vinicio Cóndor": "Grupo 7",
+    "Israel Rocha": "Grupo 8",
+    "David Quiñonez": "Grupo 9",
+    "Hugo Diaz": "Grupo 10"
+    },
+    "siervos":
+    {
+    "Antonio Zambrano": "Grupo 1",
+    "Pedro Apolinario": "Grupo 2",
+    "Edixon Colina": "Grupo 3",
+    "Pablo Morales": "Grupo 4",
+    "Ezequiel Ortega": "Grupo 5",
+    "Paul Fernandez": "Grupo 6",
+    "Vinicio Vela": "Grupo 7",
+    "Abel Peralta": "Grupo 8",
+    "Victor Rocha": "Grupo 9",
+    "Byron Vela": "Grupo 10"
+    }
+}

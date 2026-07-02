@@ -1,0 +1,13 @@
+# requirements.txt
+# Instala dependencias para: Selenium, scraping, Excel, PDFs y automatización COM (Windows)
+
+selenium
+pandas
+beautifulsoup4
+openpyxl
+PyPDF2
+PyMuPDF
+
+# Solo Windows (para win32com.client / Dispatch)
+# Imprimir en el serial " python -m pip install -r requirements.txt "
+pywin32; platform_system == "Windows"

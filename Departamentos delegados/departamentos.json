@@ -1,0 +1,233 @@
+{
+  "Alimentación": {
+    "Cocina": {
+      "Asistente de Alimentación": [
+        "Israel Rocha",
+        "Luis Chamorro"
+      ],
+      "Encargado de Cocina": [
+        "Daniel Valencia"
+      ],
+      "Asistente de encargado de Cocina": [
+        "Paul Fernandez"
+      ],
+      "Responsable de Cocina Caliente": [
+        "Yolanda Mora"
+      ],
+      "Ayudantes de cocina caliente": [
+        "Jeannet de Puma",
+        "Nataly Quiñónez",
+        "Silvia Cifuentes"
+      ],
+      "Responsable de Cocina Fria": [
+        "Gabriela Aguayo"
+      ],
+      "Ayudantes de cocina fria": [
+        "Verónica de Mendoza",
+        "Yolanda de Tigse",
+        "Monica de Vargas"
+      ],
+      "Responsable de Reposteria": [
+        "Rebeca de Encalada"
+      ],
+      "Ayudantes de Reposteria": [
+        "Catalina de Carrera",
+        "Victoria de Jiménez",
+        "Scarlett Luna"
+      ],
+      "Responsable de Limpieza": [
+        "Belén de Morales"
+      ],
+      "Ayudantes de Limpieza": [
+        "Ezequiel Ortega",
+        "Jadira Montesdeoca"
+      ],
+      "Backup": [
+        "Narcisa de Diaz",
+        "Victoria de Jiménez"
+      ]
+    },
+    "Servicio": {
+      "Asistente de Alimentación": [
+        "Israel Rocha",
+        "Luis Chamorro"
+      ],
+      "Encargado de personal de servicio":["Antonio Zambrano"],
+      "Ayudante de servicio":["Patricio Quilachamin"],
+      "Personal de Buffet": [
+        "Jenyffer Cadena",
+        "Ana de Cardenas",
+        "Narcisa de Diaz",
+        "Cristina de Fernández"
+      ],
+      "Meseros":[
+      "Mishelle Perez",
+      "Angelica Rocha",
+      "Sebastian Carrera",
+      "Abigail Rodríguez",
+      "Jonathan Nieto",
+      "Merly de Lasso",
+      "Lucy Castillo"
+      ],
+      "Responsables de Bebidas y Cafeteria":[
+        "Pilar de Colina",
+        "Paola Pérez"
+      ],
+      "Responsables de Limpieza":[
+        "Martha de Quilachamin",
+        "Daniel Cevallos",
+        "Maria de Vela"
+      ],
+      "Backup": [
+        "Nataly Quiñónez",
+        "Gabriela Aguayo",
+        "Scarlett Luna"       
+      ]
+    }
+  },
+
+  "Instalaciones": {
+    "Personal": [
+      "Edixon Colina",
+      "Freddy Velazco",
+      "Hugo Diaz",
+      "Estefania de Aimara"
+    ]
+  },
+
+  "Seguridad": {
+    "Personal": [
+      "Pablo Morales",
+      "Luis Campaña",
+      "Manuel Vizcaino",
+      "Pedro Apolinario",
+      "Marcelo Moreano",
+      "Edwin Encalada",
+      "Byron Vela"
+    ]
+  },
+
+  "Auxilios": {
+    "Personal": [
+      "Ana de Garcia"
+    ]
+  },
+
+  "Traductores": {
+    "Personal": [
+      "Lorena Cela",
+      "Fanny de Guilcazo"
+    ]
+  },
+
+  "Fotografia": {
+    "Personal": [
+      "Annabella Zambrano"
+    ]
+  },
+
+  "Predicacion": {
+    "Personal": [
+      "Sara de Alvarez",
+      "Verónica de Moreano",
+      "Lucila de Moreano",
+      "Martha de Vizcaíno",
+      "Tatiana de Condor",
+      "Salome de Quiñónez",
+      "Gabriela de Quiñónez",
+      "Daysi de Vela",
+      "Aida de Chamorro",
+      "Blanca de Condor",
+      "Blanca de Guaman",
+      "Daysi Espinoza",
+      "Abigail de Nieto",
+      "Fernanda Cajas",
+      "Gloria Zuñiga",
+      "Noemí Diaz",
+      "Marlene de Rocha",
+      "Ana de Lugmaña",
+      "Fanny de Perez",
+      "Carmen Guevara",
+      "Lourdes de Maldonado",
+      "Maricela Reyna",
+      "Matilde Macías",
+      "Myriam de Jato",
+      "Rosa Ramirez",
+      "Lorena Mera",
+      "Olga de Campaña",
+      "Norma de Valencia",
+      "Victoria Amagua",
+      "Abel Peralta",
+      "Víctor Rocha",
+      "Carlos Pastas",
+      "Darwin Guillén",
+      "Fernando Cajas",
+      "Luis Guilcazo",
+      "Luis Jimenez",
+      "Freddy Pérez",
+      "Luis Gaona",
+      "Santiago Tipantuña",
+      "Wilson Alarcón",
+      "Wilson Rodriguez",
+      "Jose Carrera",
+      "Jaime Mera"
+    ]
+  },
+
+  "Acomodadores": {
+    "Personal": [
+      "Adrian Tipantuña",
+      "Santiago Tipantuña",
+      "David Villareal",
+      "Jhon Jairo Cabrera",
+      "Alex Calvache"
+    ]
+  },
+
+  "Coro": {
+    "Personal": [
+      "Allyson Vela",
+      "Caleb Villareal",
+      "Keily Moreano",
+      "Mateo Peralta",
+      "Maykel Salas",
+      "Valentina Carrera",
+      "Zoé Carrera",
+      "Viviana Moreano",
+      "Damián Peralta",
+      "Matías Morales",
+      "Jael Rocha",
+      "Zacarías Villarreal",
+      "Luciana Santillán"
+    ]
+  },
+
+  "Hospitalidad": {
+    "Personal": [
+      "Vinicio Condor",
+      "David Quiñonez"
+    ]
+  },
+
+  "Bienvenida": {
+    "Personal": [
+      "Alexa Calvache",
+      "Aida Recalde",
+      "Amparito de Lopez",
+      "Angela de Zabala",
+      "Benjamín Cóndor",
+      "Brayan Mendoza",
+      "Carmelina Tualombo",
+      "Carmen Guevara",
+      "Carmen Yambay",
+      "Carmita de Mera",
+      "Carolina Arteaga",
+      "Cecilia Larco",
+      "Cumandá Naranjo",
+      "Dolores Padilla",
+      "Dorianny Torrealba",
+      "Doris de Hernandez",
+      "Elizabeth García"
+    ]
+  }
+}
