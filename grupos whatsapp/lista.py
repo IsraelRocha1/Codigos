@@ -33,7 +33,7 @@ ARCHIVO_CONTACTOS = r"C:\Users\israe\Documents\Codigos\grupos whatsapp\hourglass
 COLUMNA_NOMBRE = "fullname"         # nombre de la columna que contiene el nombre del contacto
 PAUSA_ENTRE_CONTACTOS = 15            # segundos, sube esto si puedes (30+ es más seguro)
 # ----------------------------------
-
+ 
 
 def iniciar_driver():
     import os
