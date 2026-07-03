@@ -1,0 +1,40 @@
+2026/07/02-23:34:17.805 2bec Reusing MANIFEST C:\Users\israe\Documents\Codigos\whatsapp_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/07/02-23:34:17.807 2bec Recovering log #1262
+2026/07/02-23:34:17.819 2bec Reusing old log C:\Users\israe\Documents\Codigos\whatsapp_session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/001262.log 
+2026/07/02-23:34:18.360 5a58 Compacting 1@1 + 2@2 files
+2026/07/02-23:34:18.452 5a58 Generated table #1275@1: 51213 keys, 2239819 bytes
+2026/07/02-23:34:18.590 5a58 Generated table #1276@1: 69150 keys, 2026572 bytes
+2026/07/02-23:34:18.590 5a58 Compacted 1@1 + 2@2 files => 4266391 bytes
+2026/07/02-23:34:18.591 5a58 compacted to: files[ 0 0 39 0 0 0 0 ]
+2026/07/02-23:34:18.592 5a58 Delete type=2 #1259
+2026/07/02-23:34:18.592 5a58 Delete type=2 #1260
+2026/07/02-23:34:18.592 5a58 Delete type=2 #1264
+2026/07/02-23:34:33.302 49a4 Level-0 table #1278: started
+2026/07/02-23:34:33.319 49a4 Level-0 table #1278: 1131457 bytes OK
+2026/07/02-23:34:33.322 49a4 Delete type=0 #1262
+2026/07/02-23:34:34.319 5a58 Compacting 1@0 + 0@1 files
+2026/07/02-23:34:34.340 5a58 Generated table #1279@0: 15874 keys, 200619 bytes
+2026/07/02-23:34:34.351 5a58 Generated table #1280@0: 9985 keys, 386194 bytes
+2026/07/02-23:34:34.351 5a58 Compacted 1@0 + 0@1 files => 586813 bytes
+2026/07/02-23:34:34.353 5a58 compacted to: files[ 0 2 39 0 0 0 0 ]
+2026/07/02-23:34:34.353 5a58 Delete type=2 #1278
+2026/07/02-23:34:35.355 5a58 Compacting 1@1 + 8@2 files
+2026/07/02-23:34:35.425 5a58 Generated table #1281@1: 26609 keys, 2249498 bytes
+2026/07/02-23:34:35.473 5a58 Generated table #1282@1: 19519 keys, 2275250 bytes
+2026/07/02-23:34:35.504 5a58 Generated table #1283@1: 12271 keys, 2146394 bytes
+2026/07/02-23:34:35.553 5a58 Generated table #1284@1: 57456 keys, 2196017 bytes
+2026/07/02-23:34:35.622 5a58 Generated table #1285@1: 96972 keys, 2245691 bytes
+2026/07/02-23:34:35.682 5a58 Generated table #1286@1: 95486 keys, 2244843 bytes
+2026/07/02-23:34:35.745 5a58 Generated table #1287@1: 97668 keys, 2246267 bytes
+2026/07/02-23:34:35.764 5a58 Generated table #1288@1: 23070 keys, 880753 bytes
+2026/07/02-23:34:35.764 5a58 Compacted 1@1 + 8@2 files => 16484713 bytes
+2026/07/02-23:34:35.765 5a58 compacted to: files[ 0 1 39 0 0 0 0 ]
+2026/07/02-23:34:35.766 5a58 Delete type=2 #1266
+2026/07/02-23:34:35.766 5a58 Delete type=2 #1267
+2026/07/02-23:34:35.766 5a58 Delete type=2 #1268
+2026/07/02-23:34:35.766 5a58 Delete type=2 #1269
+2026/07/02-23:34:35.766 5a58 Delete type=2 #1270
+2026/07/02-23:34:35.766 5a58 Delete type=2 #1271
+2026/07/02-23:34:35.767 5a58 Delete type=2 #1272
+2026/07/02-23:34:35.767 5a58 Delete type=2 #1273
+2026/07/02-23:34:35.767 5a58 Delete type=2 #1280
