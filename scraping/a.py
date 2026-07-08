@@ -1,5 +1,5 @@
 """
-Extrae nombre y teléfono desde un archivo HTML y los guarda en un Excel.
+Extrae nombre, teléfono y correo desde un archivo HTML y los guarda en un Excel.
 
 Requisitos (instalar una sola vez):
     pip install beautifulsoup4 pandas openpyxl
@@ -12,8 +12,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 # --- Configuración ---
-RUTA_HTML = r"C:\Users\israe\Documents\2.html"
-RUTA_SALIDA = r"C:\Users\israe\Documents\contactos2.xlsx"
+RUTA_HTML = r"C:\Users\irocha\Downloads\3.html"
+RUTA_SALIDA = r"C:\Users\irocha\Downloads\contactos3.xlsx"
 
 
 def main():
@@ -41,9 +41,13 @@ def main():
         telefono_el = tarjeta.find("bdi", class_="text-phone")
         telefono = telefono_el.get_text(strip=True) if telefono_el else ""
 
-        datos.append({"Nombre": nombre, "Telefono": telefono})
+        # Correo: cualquier elemento con class="email" (sin importar el tag)
+        email_el = tarjeta.find(class_="email")
+        email = email_el.get_text(strip=True) if email_el else ""
 
-    df = pd.DataFrame(datos, columns=["Nombre", "Telefono"])
+        datos.append({"Nombre": nombre, "Telefono": telefono, "Correo": email})
+
+    df = pd.DataFrame(datos, columns=["Nombre", "Telefono", "Correo"])
     df.to_excel(RUTA_SALIDA, index=False)
     print(f"Listo. Excel guardado en: {RUTA_SALIDA} ({len(datos)} contactos)")
 
