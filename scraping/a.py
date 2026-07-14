@@ -1,5 +1,5 @@
 """
-Extrae nombre, teléfono y correo desde un archivo HTML y los guarda en un Excel.
+Extrae nombre, teléfono, correo y dato adicional desde un archivo HTML y los guarda en un Excel.
 
 Requisitos (instalar una sola vez):
     pip install beautifulsoup4 pandas openpyxl
@@ -12,8 +12,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 # --- Configuración ---
-RUTA_HTML = r"C:\Users\irocha\Downloads\3.html"
-RUTA_SALIDA = r"C:\Users\irocha\Downloads\contactos3.xlsx"
+RUTA_HTML = r"C:\Users\irocha\Downloads\1.html"
+RUTA_SALIDA = r"C:\Users\irocha\Downloads\contactos1.xlsx"
 
 
 def main():
@@ -45,9 +45,26 @@ def main():
         email_el = tarjeta.find(class_="email")
         email = email_el.get_text(strip=True) if email_el else ""
 
-        datos.append({"Nombre": nombre, "Telefono": telefono, "Correo": email})
+        # Dato adicional: otras apariciones de "transliteration__vernacular" en la tarjeta
+        # (fuera del header, donde ya tomamos el nombre principal)
+        todos_els = tarjeta.find_all("span", class_="transliteration__vernacular")
+        extras = []
+        for el in todos_els:
+            if el is nombre_el:
+                continue  # ya usado como Nombre
+            texto = el.get_text(strip=True)
+            if texto:
+                extras.append(texto)
+        Congregacion = "; ".join(extras)
 
-    df = pd.DataFrame(datos, columns=["Nombre", "Telefono", "Correo"])
+        datos.append({
+            "Nombre": nombre,
+            "Telefono": telefono,
+            "Correo": email,
+            "Congregacion": Congregacion,
+        })
+
+    df = pd.DataFrame(datos, columns=["Nombre", "Telefono", "Correo", "Congregacion"])
     df.to_excel(RUTA_SALIDA, index=False)
     print(f"Listo. Excel guardado en: {RUTA_SALIDA} ({len(datos)} contactos)")
 
