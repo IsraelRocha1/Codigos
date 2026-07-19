@@ -1,3 +1,15 @@
-2026/07/05-15:03:58.234 54a0 Reusing MANIFEST C:\Users\israe\Documents\Codigos\whatsapp_session\Default\Local Storage\leveldb/MANIFEST-000001
-2026/07/05-15:03:58.243 54a0 Recovering log #7
-2026/07/05-15:03:58.247 54a0 Reusing old log C:\Users\israe\Documents\Codigos\whatsapp_session\Default\Local Storage\leveldb/000007.log 
+2026/07/06-23:02:36.567 2a9c Reusing MANIFEST C:\Users\israe\Documents\Codigos\whatsapp_session\Default\Local Storage\leveldb/MANIFEST-000001
+2026/07/06-23:02:36.577 2a9c Recovering log #23
+2026/07/06-23:02:36.580 2a9c Reusing old log C:\Users\israe\Documents\Codigos\whatsapp_session\Default\Local Storage\leveldb/000023.log 
+2026/07/06-23:19:37.493 43ac Level-0 table #27: started
+2026/07/06-23:19:37.502 43ac Level-0 table #27: 19194 bytes OK
+2026/07/06-23:19:37.505 43ac Delete type=0 #23
+2026/07/06-23:19:37.506 43ac Compacting 4@0 + 1@1 files
+2026/07/06-23:19:37.519 43ac Generated table #28@0: 608 keys, 33281 bytes
+2026/07/06-23:19:37.519 43ac Compacted 4@0 + 1@1 files => 33281 bytes
+2026/07/06-23:19:37.520 43ac compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/07/06-23:19:37.522 43ac Delete type=2 #18
+2026/07/06-23:19:37.522 43ac Delete type=2 #20
+2026/07/06-23:19:37.522 43ac Delete type=2 #22
+2026/07/06-23:19:37.522 43ac Delete type=2 #24
+2026/07/06-23:19:37.523 43ac Delete type=2 #27

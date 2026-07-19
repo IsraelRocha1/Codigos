@@ -29,12 +29,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 
 # --------- CONFIGURACIÓN ---------
-NOMBRE_GRUPO = "Departamento de Hidratacion"  # nombre del grupo a crear
+NOMBRE_GRUPO = "Departamento de Hidratacion - Logística de Bidones"  # nombre del grupo a crear
 ARCHIVO_CONTACTOS = r"C:\Users\israe\Downloads\contactos.xlsx"
 COLUMNA_TELEFONO = "Telefono"      # nombre de la columna que contiene el teléfono del contacto
 COLUMNA_NOMBRE = "Nombre"           # nombre de la columna que contiene el nombre (solo para el reporte de fallidos)
 CODIGO_PAIS = "593"                 # se antepone si el número no lo trae ya (ajusta al tuyo)
-PAUSA_ENTRE_CONTACTOS = 3            # segundos, sube esto si puedes (30+ es más seguro)
+PAUSA_ENTRE_CONTACTOS = 15            # segundos, sube esto si puedes (30+ es más seguro)
 ARCHIVO_FALLIDOS = "contactos_no_agregados.xlsx"   # se genera al final con nombre + teléfono
 # ----------------------------------
 

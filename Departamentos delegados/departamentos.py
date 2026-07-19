@@ -12,6 +12,9 @@ def normalizar(texto):
 
     texto = str(texto).strip().lower()
 
+    if texto == "":
+        return ""
+
     # Proteger la ñ y Ñ temporalmente
     texto = texto.replace("ñ", "__enie__")
     texto = texto.replace("Ñ", "__ENIE__")
@@ -28,11 +31,37 @@ def normalizar(texto):
 
     return texto
 
+
+# ---------------------------
+# Extracción recursiva de nombres
+# ---------------------------
+def extraer_nombres(nodo, departamento, nombres_por_departamento):
+    """
+    Recorre recursivamente el JSON (sin importar cuántos niveles de
+    subdepartamentos/roles tenga) y agrega cada nombre encontrado
+    a la lista del departamento de nivel superior correspondiente.
+    """
+    if isinstance(nodo, list):
+        for nombre in nodo:
+            # Ignorar valores vacíos, None, o strings en blanco
+            if nombre is None:
+                continue
+            if isinstance(nombre, str) and nombre.strip() == "":
+                continue
+            nombres_por_departamento[departamento].append(nombre)
+
+    elif isinstance(nodo, dict):
+        for valor in nodo.values():
+            extraer_nombres(valor, departamento, nombres_por_departamento)
+
+    # Si no es ni lista ni dict (caso inesperado), se ignora
+
+
 # ---------------------------
 # Leer CSV
 # ---------------------------
 df = pd.read_csv(
-    r"C:\Users\israe\Documents\Codigos\Departamentos delegados\hourglass-contactlist.csv",
+    r"C:\Users\israe\Documents\Codigos\Archivos descargados desde hourglass\hourglass-contactlist.csv",
     dtype=str
 )
 
@@ -46,15 +75,26 @@ with open(
 ) as f:
     departamentos = json.load(f)
 
+# ---------------------------
+# Extraer todos los nombres, agrupados por departamento de nivel superior
+# ---------------------------
+nombres_por_departamento = defaultdict(list)
+
+for departamento, contenido in departamentos.items():
+    extraer_nombres(contenido, departamento, nombres_por_departamento)
+
 # =====================================================
 # PARTE 1: PERSONAS NO ASIGNADAS
 # =====================================================
 
 nombres_departamentos = set()
 
-for lista in departamentos.values():
-    for nombre in lista:
+for lista_nombres in nombres_por_departamento.values():
+    for nombre in lista_nombres:
         nombres_departamentos.add(normalizar(nombre))
+
+# Quitar cadena vacía por seguridad (no debería quedar ninguna, pero por si acaso)
+nombres_departamentos.discard("")
 
 df["fullname_normalizado"] = df["fullname"].apply(normalizar)
 
@@ -80,10 +120,12 @@ df_no_asignados.to_excel(
 
 personas_departamentos = defaultdict(list)
 
-for departamento, lista_personas in departamentos.items():
-    for nombre in lista_personas:
+for departamento, lista_nombres in nombres_por_departamento.items():
+    for nombre in lista_nombres:
 
         nombre_norm = normalizar(nombre)
+        if nombre_norm == "":
+            continue
 
         personas_departamentos[nombre_norm].append({
             "Nombre": nombre,

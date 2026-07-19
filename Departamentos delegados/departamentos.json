@@ -16,7 +16,7 @@
       ],
       "Ayudantes de cocina caliente": [
         "Jeannet de Puma",
-        "Nataly Quiñónez",
+        "Narcisa de Diaz",
         "Silvia Cifuentes"
       ],
       "Responsable de Cocina Fria": [
@@ -31,19 +31,19 @@
         "Rebeca de Encalada"
       ],
       "Ayudantes de Reposteria": [
-        "Catalina de Carrera",
+        "",
         "Victoria de Jiménez",
-        "Scarlett Luna"
+        "Jadira Montesdeoca"
       ],
       "Responsable de Limpieza": [
         "Belén de Morales"
       ],
       "Ayudantes de Limpieza": [
         "Ezequiel Ortega",
-        "Jadira Montesdeoca"
+        "Ana de Cardenas"
       ],
       "Backup": [
-        "Narcisa de Diaz",
+
         "Victoria de Jiménez"
       ]
     },
@@ -55,8 +55,7 @@
       "Encargado de personal de servicio":["Antonio Zambrano"],
       "Ayudante de servicio":["Patricio Quilachamin"],
       "Personal de Buffet": [
-        "Jenyffer Cadena",
-        "Ana de Cardenas",
+        "Fanny de Guilcazo",
         "Narcisa de Diaz",
         "Cristina de Fernández"
       ],
@@ -71,7 +70,8 @@
       ],
       "Responsables de Bebidas y Cafeteria":[
         "Pilar de Colina",
-        "Paola Pérez"
+        "Paola Pérez",
+        "Jenyffer Cadena"
       ],
       "Responsables de Limpieza":[
         "Martha de Quilachamin",
@@ -79,9 +79,7 @@
         "Maria de Vela"
       ],
       "Backup": [
-        "Nataly Quiñónez",
-        "Gabriela Aguayo",
-        "Scarlett Luna"       
+        "Gabriela Aguayo"  
       ]
     }
   },
@@ -91,7 +89,8 @@
       "Edixon Colina",
       "Freddy Velazco",
       "Hugo Diaz",
-      "Estefania de Aimara"
+      "Estefania de Aimara",
+      "Freddy Pérez"
     ]
   },
 
@@ -127,35 +126,30 @@
   },
 
   "Predicacion": {
-    "Personal": [
+    "Publicadores": [
       "Sara de Alvarez",
       "Verónica de Moreano",
       "Lucila de Moreano",
       "Martha de Vizcaíno",
       "Tatiana de Condor",
       "Salome de Quiñónez",
-      "Gabriela de Quiñónez",
       "Daysi de Vela",
       "Aida de Chamorro",
       "Blanca de Condor",
-      "Blanca de Guaman",
       "Daysi Espinoza",
       "Fernanda Cajas",
       "Gloria Zuñiga",
       "Noemí Diaz",
       "Marlene de Rocha",
       "Ana de Lugmaña",
-      "Fanny de Perez",
       "Carmen Guevara",
       "Lourdes de Maldonado",
       "Maricela Reyna",
       "Matilde Macías",
       "Myriam de Jato",
       "Rosa Ramirez",
-      "Lorena Mera",
       "Olga de Campaña",
       "Norma de Valencia",
-      "Victoria Amagua",
       "Abel Peralta",
       "Víctor Rocha",
       "Carlos Pastas",
@@ -169,16 +163,21 @@
       "Wilson Alarcón",
       "Wilson Rodriguez",
       "Jose Carrera",
-      "Jaime Mera"
+      "Jaime Mera",
+      "David Villareal",
+      "JhonJairo Cabrera",
+      "Francisco Vizuete",
+      "Pablo Lopez",
+      "Luis Chamorro",
+      "Daniel Cevallos",
+      "Hugo Diaz"
+
     ]
   },
 
   "Acomodadores": {
     "Personal": [
       "Adrian Tipantuña",
-      "Santiago Tipantuña",
-      "David Villareal",
-      "Jhon Jairo Cabrera",
       "Alex Calvache"
     ]
   },
@@ -212,7 +211,6 @@
     "Personal": [
       "Alexa Calvache",
       "Aida Recalde",
-      "Amparito de Lopez",
       "Angela de Zabala",
       "Benjamín Cóndor",
       "Brayan Mendoza",
