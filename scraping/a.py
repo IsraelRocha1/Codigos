@@ -12,6 +12,7 @@ Uso:
 from bs4 import BeautifulSoup
 import pandas as pd
 
+
 # --- Configuración ---
 # Clave = ruta del archivo HTML, Valor = nombre de la pestaña en el Excel
 ARCHIVOS = {
