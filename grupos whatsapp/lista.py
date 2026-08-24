@@ -1,11 +1,11 @@
 import pandas as pd
 
 # Leer el Excel
-df = pd.read_excel(r"C:\Users\israe\Downloads\contactosm.xlsx")
+df = pd.read_excel(r"C:\Users\israe\Downloads\Sabado Israel Rocha.xlsx")
 
 print(df.columns)   # Ver los nombres de las columnas
 
-with open("contactosm.vcf", "w", encoding="utf-8") as f:
+with open("contactos.vcf", "w", encoding="utf-8") as f:
 
     for _, fila in df.iterrows():
 

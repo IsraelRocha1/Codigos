@@ -1,6 +1,7 @@
 """
 Extrae nombre, teléfono, correo y dato adicional desde varios archivos HTML
-y los guarda en un solo Excel, cada uno en su propia pestaña.
+y los guarda en un solo Excel, cada uno en su propia pestaña, agregando
+a qué horario pertenece cada persona.
 
 Requisitos (instalar una sola vez):
     pip install beautifulsoup4 pandas openpyxl
@@ -12,22 +13,22 @@ Uso:
 from bs4 import BeautifulSoup
 import pandas as pd
 
-
 # --- Configuración ---
 # Clave = ruta del archivo HTML, Valor = nombre de la pestaña en el Excel
 ARCHIVOS = {
-    r"C:\Users\israe\Downloads\1mañana.html": "Viernes - Mañana",
-    r"C:\Users\israe\Downloads\1tarde.html":  "Viernes - Tarde",
-    r"C:\Users\israe\Downloads\2mañana.html": "Sabado - Mañana",
-    r"C:\Users\israe\Downloads\2tarde.html":  "Sabado - Tarde",
-    r"C:\Users\israe\Downloads\3mañana.html": "Domingo - Mañana",
-    r"C:\Users\israe\Downloads\3tarde.html":  "Domingo - Tarde",
+    r"C:\Users\israe\Downloads\1mañana.html": "Viernes-Mañana",
+    r"C:\Users\israe\Downloads\1tarde.html":   "Viernes-Tarde",
+    r"C:\Users\israe\Downloads\2mañana.html": "Sabado-Mañana",
+    r"C:\Users\israe\Downloads\2tarde.html":   "Sabado-Tarde",
+    r"C:\Users\israe\Downloads\3mañana.html": "Domingo-Mañana",
+    r"C:\Users\israe\Downloads\3tarde.html":   "Domingo-Tarde",
 }
-
 RUTA_SALIDA = r"C:\Users\israe\Downloads\contactos.xlsx"
 
+COLUMNAS = ["Nombre", "Telefono", "Correo", "Congregacion", "Horario"]
 
-def extraer_datos(ruta_html):
+
+def extraer_datos(ruta_html, horario):
     with open(ruta_html, "r", encoding="utf-8") as f:
         soup = BeautifulSoup(f, "html.parser")
 
@@ -67,26 +68,36 @@ def extraer_datos(ruta_html):
             "Telefono": telefono,
             "Correo": email,
             "Congregacion": congregacion,
+            "Horario": horario,
         })
 
     return datos
 
 
 def main():
+    todos_los_datos = []  # para la pestaña consolidada "Todos"
+
     with pd.ExcelWriter(RUTA_SALIDA, engine="openpyxl") as writer:
         for ruta_html, nombre_hoja in ARCHIVOS.items():
             print(f"Procesando: {ruta_html}")
             try:
-                datos = extraer_datos(ruta_html)
+                datos = extraer_datos(ruta_html, nombre_hoja)
             except FileNotFoundError:
                 print(f"  !! No se encontró el archivo, se omite: {ruta_html}")
                 continue
 
-            df = pd.DataFrame(datos, columns=["Nombre", "Telefono", "Correo", "Congregacion"])
+            df = pd.DataFrame(datos, columns=COLUMNAS)
             # Excel no permite nombres de hoja > 31 caracteres
             hoja = nombre_hoja[:31]
             df.to_excel(writer, sheet_name=hoja, index=False)
             print(f"  -> {len(datos)} contactos guardados en pestaña '{hoja}'")
+
+            todos_los_datos.extend(datos)
+
+        # Pestaña consolidada con todos los contactos y su horario
+        df_todos = pd.DataFrame(todos_los_datos, columns=COLUMNAS)
+        df_todos.to_excel(writer, sheet_name="Todos", index=False)
+        print(f"\n-> Pestaña 'Todos' creada con {len(todos_los_datos)} contactos en total")
 
     print(f"\nListo. Excel guardado en: {RUTA_SALIDA}")
 

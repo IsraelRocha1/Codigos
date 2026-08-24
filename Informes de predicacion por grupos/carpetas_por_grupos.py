@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+import pymupdf
 import os
 import re
 import unicodedata
@@ -11,7 +11,7 @@ import pandas as pd
 # CONFIGURACIÓN
 # =========================
 
-mes = "mayo"
+mes = "junio"
 anio_actual = "2026"
 
 import os
@@ -308,8 +308,14 @@ def cargar_contactos(csv_path):
                 " ".join(filter(None, [lastname, firstname, middlename]))
             )
 
+            descriptor = row.get("descriptor", "").strip()
+            fullname = row.get("fullname", "").strip()
+
+            # Si descriptor está vacío, usar fullname
+            nombre = descriptor if descriptor else fullname
+
             contactos[clave] = {
-                "fullname": row.get("fullname", "").strip(),
+                "fullname": nombre,
                 "overseer": row.get("group_overseer", "").strip(),
                 "status": row.get("status", "").strip(),
                 "inactive": row.get("inactive", "").strip()
@@ -417,7 +423,7 @@ def guardar_persona(nombre_pdf, paginas, contactos, mapa_grupos):
         f"{nombre_archivo} - {status_archivo}.pdf"
     )
 
-    nuevo_pdf = fitz.open()
+    nuevo_pdf = pymupdf.open()
 
     for p in paginas:
         nuevo_pdf.insert_pdf(
@@ -493,7 +499,7 @@ def procesar_totales(pdf_path):
     carpeta_totales = os.path.join(OUTPUT_DIR, "Totales")
     os.makedirs(carpeta_totales, exist_ok=True)
 
-    doc = fitz.open(pdf_path)
+    doc = pymupdf.open(pdf_path)
 
     grupos = {}
 
@@ -510,7 +516,7 @@ def procesar_totales(pdf_path):
     for tipo, paginas in grupos.items():
         ruta = os.path.join(carpeta_totales, f"{tipo}.pdf")
 
-        nuevo_pdf = fitz.open()
+        nuevo_pdf = pymupdf.open()
         for p in paginas:
             nuevo_pdf.insert_pdf(p.parent, from_page=p.number, to_page=p.number)
 
@@ -533,7 +539,7 @@ def main():
     mapa_grupos = cargar_grupos(JSON_GRUPOS)
 
     print("Abriendo PDF único...")
-    doc = fitz.open(PDF_UNICO)
+    doc = pymupdf.open(PDF_UNICO)
 
     print("Procesando registros...")
     procesar_rango(
