@@ -9,7 +9,7 @@ import re
 import time
 import os
 
-url = "https://wol.jw.org/es/wol/publication/r4/lp-s/sjj/329"
+url = "https://wol.jw.org/es/wol/publication/r4/lp-s/sjj/164"
 
 # ===== RUTAS =====
 base_proyecto = os.path.dirname(os.path.abspath(__file__))

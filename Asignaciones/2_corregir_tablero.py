@@ -1,22 +1,27 @@
 import fitz  # PyMuPDF
 import os
+import glob
+import re
+from itertools import zip_longest
 from win32com.client import Dispatch
 
 # ========= RUTAS =========
 base_proyecto = os.path.dirname(os.path.abspath(__file__))
 carpeta_Tablero = os.path.join(base_proyecto, "Tablero")
 
-# Temp Excel (en Tablero)
-excels_superiores = [
-    os.path.join(carpeta_Tablero, "temp_html1.xlsx"),
-    os.path.join(carpeta_Tablero, "temp_html3.xlsx"),
-]
-excels_inferiores = [
-    os.path.join(carpeta_Tablero, "temp_html2.xlsx"),
-    os.path.join(carpeta_Tablero, "temp_html4.xlsx"),
-]
+# ========= BUSCAR Y ORDENAR ARCHIVOS EXCEL =========
+# Buscar todos los archivos que coincidan con temp_html*.xlsx
+patron_busqueda = os.path.join(carpeta_Tablero, "temp_html*.xlsx")
+todos_los_excels = glob.glob(patron_busqueda)
 
-# Nombres de PDF (quieres html1..4.pdf)
+# Función para extraer el número del archivo y ordenar correctamente (1, 2, 3... 10, 11)
+def extraer_numero(ruta):
+    nombre = os.path.basename(ruta)
+    numeros = re.findall(r'\d+', nombre)
+    return int(numeros[0]) if numeros else 0
+
+todos_los_excels.sort(key=extraer_numero)
+
 pdf_superiores = []
 pdf_inferiores = []
 
@@ -30,21 +35,20 @@ def excel_a_pdf(ruta_excel, ruta_pdf):
     wb.Close(False)
     excel.Quit()
 
-# Convertir superiores (temp_html1 -> html1.pdf, temp_html3 -> html3.pdf)
-for ruta_excel in excels_superiores:
-    nombre = os.path.basename(ruta_excel)  # temp_html1.xlsx
-    num = nombre.replace("temp_html", "").replace(".xlsx", "")  # 1
+# Convertir todos los excels encontrados y repartirlos dinámicamente
+for i, ruta_excel in enumerate(todos_los_excels):
+    nombre = os.path.basename(ruta_excel) 
+    num = nombre.replace("temp_html", "").replace(".xlsx", "") 
     ruta_pdf = os.path.join(carpeta_Tablero, f"html{num}.pdf")
+    
     excel_a_pdf(ruta_excel, ruta_pdf)
-    pdf_superiores.append(ruta_pdf)
-
-# Convertir inferiores (temp_html2 -> html2.pdf, temp_html4 -> html4.pdf)
-for ruta_excel in excels_inferiores:
-    nombre = os.path.basename(ruta_excel)
-    num = nombre.replace("temp_html", "").replace(".xlsx", "")
-    ruta_pdf = os.path.join(carpeta_Tablero, f"html{num}.pdf")
-    excel_a_pdf(ruta_excel, ruta_pdf)
-    pdf_inferiores.append(ruta_pdf)
+    
+    # Si el índice es par (0, 2, 4...) es el 1º, 3º, 5º archivo -> Superior
+    if i % 2 == 0:
+        pdf_superiores.append(ruta_pdf)
+    # Si el índice es impar (1, 3, 5...) es el 2º, 4º, 6º archivo -> Inferior
+    else:
+        pdf_inferiores.append(ruta_pdf)
 
 # ========= COMBINAR PARES =========
 def combinar_pares(pdf_superiores, pdf_inferiores, salida_path,
@@ -56,15 +60,19 @@ def combinar_pares(pdf_superiores, pdf_inferiores, salida_path,
     nuevo_pdf = fitz.open()
     ancho, alto = fitz.paper_size("a4")
 
-    for sup_path, inf_path in zip(pdf_superiores, pdf_inferiores):
+    # zip_longest empareja hasta la lista más larga, rellenando con None si falta uno (impar)
+    for sup_path, inf_path in zip_longest(pdf_superiores, pdf_inferiores):
         pdf_sup = fitz.open(sup_path)
-        pdf_inf = fitz.open(inf_path)
 
         pagina = nuevo_pdf.new_page(width=ancho, height=alto)
         pagina.show_pdf_page(fitz.Rect(0, 0, ancho, alto), pdf_sup, 0)
 
-        offset = alto / 2 - offset_y
-        pagina.show_pdf_page(fitz.Rect(0, offset, ancho, offset + alto), pdf_inf, 0)
+        # Solo procesar e insertar el PDF inferior si existe
+        if inf_path:
+            pdf_inf = fitz.open(inf_path)
+            offset = alto / 2 - offset_y
+            pagina.show_pdf_page(fitz.Rect(0, offset, ancho, offset + alto), pdf_inf, 0)
+            pdf_inf.close()
 
         y_texto = alto - y_margen_inferior
         pagina.insert_text(
@@ -76,7 +84,6 @@ def combinar_pares(pdf_superiores, pdf_inferiores, salida_path,
         )
 
         pdf_sup.close()
-        pdf_inf.close()
 
     nuevo_pdf.save(salida_path)
     nuevo_pdf.close()

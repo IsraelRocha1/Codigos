@@ -1,4 +1,5 @@
 import re
+import glob
 from datetime import datetime, timedelta
 import unicodedata
 import os
@@ -13,7 +14,7 @@ base_proyecto = os.path.dirname(os.path.abspath(__file__))
 
 carpeta_Tablero = os.path.join(base_proyecto, "Tablero")  # temp_html*.xlsx
 carpeta_recursos = os.path.join(base_proyecto, "Recursos")      # aquí está hojas.xlsx
-carpeta_hojas = os.path.join(base_proyecto, "Hojas")            # aquí se guardan 1..4.pdf
+carpeta_hojas = os.path.join(base_proyecto, "Hojas de asignaciones")            # aquí se guardan 1..n.pdf
 
 ruta_hojas_xlsx = os.path.join(carpeta_recursos, "hojas.xlsx")  # <- viene de Recursos
 ruta_imprimir_pdf = os.path.join(base_proyecto, "imprimir.pdf") # <- raíz
@@ -29,7 +30,26 @@ if not os.path.exists(ruta_hojas_xlsx):
     raise FileNotFoundError(f"No se encontró hojas.xlsx en: {ruta_hojas_xlsx}")
 
 # =========================
-# DICCIONARIOS
+# LIMPIAR PDFs ANTERIORES
+# =========================
+print("🧹 Limpiando PDFs anteriores...")
+
+# 1. Eliminar todos los PDFs dentro de la carpeta 'Hojas'
+for archivo_pdf in glob.glob(os.path.join(carpeta_hojas, "*.pdf")):
+    try:
+        os.remove(archivo_pdf)
+    except Exception as e:
+        print(f"⚠️ Error al eliminar {archivo_pdf}: {e}")
+
+# 2. Eliminar el archivo 'imprimir.pdf' de la raíz si existe
+if os.path.exists(ruta_imprimir_pdf):
+    try:
+        os.remove(ruta_imprimir_pdf)
+    except Exception as e:
+        print(f"⚠️ Error al eliminar {ruta_imprimir_pdf}: {e}")
+
+# =========================
+# DICCIONARIOS Y FUNCIONES AUXILIARES
 # =========================
 MESES_ES = {1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
             7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"}
@@ -37,6 +57,12 @@ MESES_NOMBRE = {v.upper(): k for k, v in MESES_ES.items()}
 
 def normalizar(texto):
     return unicodedata.normalize('NFKD', texto).encode('ascii', 'ignore').decode().upper()
+
+def extraer_numero(ruta):
+    """Extrae el primer número que encuentre en el nombre del archivo para ordenarlos correctamente."""
+    nombre = os.path.basename(ruta)
+    coincidencia = re.search(r'\d+', nombre)
+    return int(coincidencia.group()) if coincidencia else 0
 
 def obtener_dia_y_mes_jueves(texto, anio_actual=datetime.now().year):
     texto = normalizar(str(texto).strip())
@@ -100,20 +126,26 @@ def exportar_rango_a_pdf(ruta_excel, hoja, rango, ruta_pdf):
             pass
 
 # =========================
-# PROCESAR temp_html1.xlsx a temp_html4.xlsx (en Tablero)
+# PROCESAR DINÁMICAMENTE TODOS LOS ARCHIVOS temp_html*.xlsx EN TABLERO
 # =========================
-for n in range(1, 5):
-    ruta_temp = os.path.join(carpeta_Tablero, f"temp_html{n}.xlsx")
-    if not os.path.exists(ruta_temp):
-        print(f"❌ Archivo no encontrado: {ruta_temp}")
-        continue
+patron_temp = os.path.join(carpeta_Tablero, "temp_html*.xlsx")
+archivos_temp = sorted(glob.glob(patron_temp), key=extraer_numero)
+
+if not archivos_temp:
+    print(f"⚠️ No se encontraron archivos 'temp_html*.xlsx' en {carpeta_Tablero}")
+
+for ruta_temp in archivos_temp:
+    n = extraer_numero(ruta_temp)
+    nombre_archivo = os.path.basename(ruta_temp)
 
     wb_origen = openpyxl.load_workbook(ruta_temp)
     ws_origen = wb_origen.active
 
     texto_i2 = ws_origen["I2"].value
+    anio_actual_html = ws_origen["N2"].value
+
     if not texto_i2:
-        print(f"⚠️ La celda I2 está vacía en {ruta_temp}.")
+        print(f"⚠️ La celda I2 está vacía en {nombre_archivo}.")
         continue
 
     dia, mes = obtener_dia_y_mes_jueves(texto_i2)
@@ -121,26 +153,28 @@ for n in range(1, 5):
 
     wb_destino = openpyxl.load_workbook(ruta_hojas_xlsx)
 
-    if contador == 4:
+    if contador == 3:
         hoja_destino = wb_destino["Plantilla1"]
         rango_origen = ws_origen["K9:Q16"]
         fila_destino = 93
         hoja_nombre = "Plantilla1"
         hoja_destino["F87"] = dia
         hoja_destino["G87"] = mes
+        hoja_destino["H87"] = anio_actual_html
         rango_pdf = "A1:X76"
 
-    elif contador == 5:
+    elif contador == 4:
         hoja_destino = wb_destino["Plantilla2"]
         rango_origen = ws_origen["K9:Q18"]
         fila_destino = 104
         hoja_nombre = "Plantilla2"
         hoja_destino["F98"] = dia
         hoja_destino["G98"] = mes
+        hoja_destino["H98"] = anio_actual_html
         rango_pdf = "A1:X95"
 
     else:
-        print(f"⚠️ Conteo inválido en {ruta_temp} (L: {contador})")
+        print(f"⚠️ Conteo inválido en {nombre_archivo} (L: {contador})")
         continue
 
     for i, fila in enumerate(rango_origen):
@@ -152,18 +186,14 @@ for n in range(1, 5):
     # Guardar hojas.xlsx de vuelta en Recursos
     wb_destino.save(ruta_hojas_xlsx)
 
-    # Guardar PDF n.pdf en Hojas
+    # Guardar PDF (ej. 1.pdf, 2.pdf, etc., según el número del temp_html)
     ruta_pdf_n = os.path.join(carpeta_hojas, f"{n}.pdf")
     exportar_rango_a_pdf(ruta_hojas_xlsx, hoja_nombre, rango_pdf, ruta_pdf_n)
 
 # =========================
 # UNIR PDFs (desde Hojas) -> imprimir.pdf (en raíz)
 # =========================
-pdfs = [
-    os.path.join(carpeta_hojas, f"{i}.pdf")
-    for i in range(1, 5)
-    if os.path.exists(os.path.join(carpeta_hojas, f"{i}.pdf"))
-]
+pdfs = sorted(glob.glob(os.path.join(carpeta_hojas, "*.pdf")), key=extraer_numero)
 
 if pdfs:
     merger = PdfMerger()
@@ -171,6 +201,6 @@ if pdfs:
         merger.append(pdf)
     merger.write(ruta_imprimir_pdf)
     merger.close()
-    print(f"✅ Todos los PDFs han sido unidos correctamente como '{ruta_imprimir_pdf}'")
+    print(f"✅ Se han unido {len(pdfs)} PDFs correctamente en '{ruta_imprimir_pdf}'")
 else:
     print("⚠️ No se encontraron archivos PDF para unir.")
