@@ -1,13 +1,8 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-import pandas as pd
 import re
-import time
 import os
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 url = "https://wol.jw.org/es/wol/publication/r4/lp-s/sjj/164"
 
@@ -16,50 +11,37 @@ base_proyecto = os.path.dirname(os.path.abspath(__file__))
 carpeta_recursos = os.path.join(base_proyecto, "Recursos")
 ruta_salida = os.path.join(carpeta_recursos, "canticos_lista.xlsx")
 
-# ===== SELENIUM (sin chromedriver descargado) =====
-chrome_options = Options()
-# chrome_options.add_argument("--headless=new")  # opcional
+# ===== DESCARGAR LA PÁGINA (sin navegador) =====
+# La página trae el número y el título de cada canción directamente en el
+# HTML, así que no hace falta Selenium/Chrome para esto — evita el mismo
+# bloqueo de política de aplicaciones que dio problemas antes.
+headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+resp = requests.get(url, headers=headers, timeout=20)
+resp.raise_for_status()
+soup = BeautifulSoup(resp.text, "html.parser")
 
-driver = webdriver.Chrome(options=chrome_options)
+# ===== EXTRAER "CANCIÓN N Título" DE CADA ENLACE =====
+numeros, titulos = [], []
+vistos = set()
+for enlace in soup.find_all("a"):
+    texto = " ".join(enlace.get_text().split())
+    m = re.match(r"^CANCI[ÓO]N\s+(\d+)\s+(.+)$", texto, re.IGNORECASE)
+    if not m:
+        continue
+    numero = f"Canción {m.group(1)}"
+    if numero in vistos:
+        continue
+    vistos.add(numero)
+    numeros.append(numero)
+    titulos.append(m.group(2).strip())
 
-try:
-    driver.get(url)
-
-    WebDriverWait(driver, 15).until(
-        EC.presence_of_all_elements_located((By.CLASS_NAME, "cardTitleBlock"))
+if not numeros:
+    raise RuntimeError(
+        "No encontré ninguna canción en la página. Puede que wol.jw.org haya "
+        "cambiado de formato — revisa manualmente la URL."
     )
 
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(2)
-
-    elementos = driver.find_elements(By.CLASS_NAME, "cardTitleBlock")
-    bloques = [e.text.strip() for e in elementos if e.text.strip()]
-
-finally:
-    driver.quit()
-
-# ===== PROCESAR BLOQUES =====
-numeros, titulos = [], []
-
-for texto in bloques:
-    lineas = [l.strip() for l in str(texto).split("\n") if l.strip()]
-    numero, titulo = "", ""
-
-    for i, linea in enumerate(lineas):
-        if re.match(r"^CANCIÓN\s+\d+", linea.upper()):
-            m = re.search(r"\d+", linea)
-            if m:
-                numero = f"Canción {m.group()}"
-            if i + 1 < len(lineas):
-                titulo = " ".join(lineas[i + 1:])
-            break
-
-    numeros.append(numero)
-    titulos.append(titulo)
-
 df = pd.DataFrame({"Canción #": numeros, "Título": titulos})
-
-# Guarda en Recursos
 df.to_excel(ruta_salida, index=False)
 
-print(f"✅ Archivo creado en: {ruta_salida}")
+print(f"✅ Archivo creado en: {ruta_salida} ({len(df)} canciones)")
