@@ -4,7 +4,7 @@ import subprocess
 import sys
 import time
 
-import pymupdf  # antes "fitz" (nombre nuevo del mismo paquete, sin warning de deprecación)
+import pymupdf
 import openpyxl
 import pandas as pd
 import requests
@@ -12,21 +12,19 @@ from bs4 import BeautifulSoup
 from win32com.client import Dispatch
 
 # ========= CONFIGURA AQUÍ CADA SEMANA =========
-# 1) Los HTML del programa (asignaciones/participantes) YA LOS TIENES
-#    descargados a mano en esta carpeta, nombrados 1.html, 2.html, 3.html...
-#    (el mismo orden en el que quieres que aparezcan en el programa final).
-#    El script SOLO LOS LEE, nunca los descarga.
+
 CARPETA_HTML_DESCARGADOS = r"C:\Users\israe\Downloads"  # <-- ajusta a tu carpeta real
 
-# 2) ENLACES es una fuente aparte, solo para complementar con las CANCIONES
-#    de cada sala (se visitan con Selenium). Deben ir en el MISMO ORDEN que
-#    tus archivos 1.html, 2.html, 3.html... Si no necesitas canciones para
-#    alguna sala, puedes dejar ese elemento como None.
+
 ENLACES = [
-    "https://wol.jw.org/es/wol/d/r4/lp-s/202026256",
-    "https://wol.jw.org/es/wol/d/r4/lp-s/202026257",
+    "https://wol.jw.org/es/wol/d/r4/lp-s/202026248",
+    "https://wol.jw.org/es/wol/d/r4/lp-s/202026249",
+    "https://wol.jw.org/es/wol/d/r4/lp-s/202026252",
+    "https://wol.jw.org/es/wol/d/r4/lp-s/202026253",
     "https://wol.jw.org/es/wol/d/r4/lp-s/202026254",
-    # agrega o quita enlaces libremente: 1, 2, 3, 6... el pipeline se adapta solo
+    "https://wol.jw.org/es/wol/d/r4/lp-s/202026255",
+    "https://wol.jw.org/es/wol/d/r4/lp-s/202026256"
+    # agrega o quita enlaces libremente: 1, 2, 3, 6...
 ]
 
 # ========= RUTAS DEL PROYECTO =========
@@ -334,6 +332,14 @@ def llenar_plantilla(ws, datos, condicion, info_semana, anio=None):
             ws[f"Q{row}"] = auxiliar[0]
         if len(auxiliar) > 1:
             ws[f"Q{row + 1}"] = auxiliar[1]
+
+        # La plantilla junta estudiante/ayudante con una fórmula tipo
+        # "=K{row}&' / '&K{row+1}", que deja un " / " suelto si solo hay
+        # una persona. Escribimos el texto ya armado nosotros mismos
+        # (K/Q quedan igual, con los nombres sueltos, para que
+        # 3_corregir_asignaciones.py los siga usando tal cual).
+        ws[f"H{row}"] = " / ".join(n for n in principal if n) or None
+        ws[f"G{row}"] = " / ".join(n for n in auxiliar if n) or None
 
     ws[f"I{cfg['local_row']}"] = info_semana.get("intermedia")
 
