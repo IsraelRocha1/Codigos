@@ -43,13 +43,13 @@ df = pd.read_csv(csv_path)
 
 df["group_overseer"] = df["group_overseer"].astype(str).str.strip()
 df["group_overseer"] = df["group_overseer"].replace(r'^\s*$', pd.NA, regex=True)
-df["fullname"] = df["fullname"].astype(str).str.strip()
+df["descriptor"] = df["descriptor"].astype(str).str.strip()
 
 df["inactive"] = df["inactive"].astype(str).str.strip().str.lower()
 df = df[~df["inactive"].isin(["1", "1.0", "true", "yes"])]
 
 df["group_overseer_norm"] = df["group_overseer"].apply(normalizar)
-df["fullname_norm"] = df["fullname"].apply(normalizar)
+df["descriptor_norm"] = df["descriptor"].apply(normalizar)
 
 # ---------------------------
 # PERSONAS SIN GRUPO
@@ -60,7 +60,7 @@ ancianos_norm_set = set(normalizar(x) for x in ancianos_por_grupo.keys())
 sin_grupo = df[
     df["group_overseer"].isna() |
     (df["group_overseer_norm"] == "")
-]["fullname"].dropna().unique()
+]["descriptor"].dropna().unique()
 
 
 for nombre in sin_grupo:
@@ -83,9 +83,9 @@ for grupo in ancianos_por_grupo.keys():
     miembros_df = df[df["group_overseer_norm"] == anciano_norm]
 
     miembros = miembros_df[
-        (miembros_df["fullname_norm"] != anciano_norm) &
-        (miembros_df["fullname_norm"] != siervo_norm)
-    ]["fullname"].dropna().tolist()
+        (miembros_df["descriptor_norm"] != anciano_norm) &
+        (miembros_df["descriptor_norm"] != siervo_norm)
+    ]["descriptor"].dropna().tolist()
 
     lista = []
 
@@ -123,7 +123,7 @@ thin_border = Border(
 )
 
 fill_title = PatternFill("solid", fgColor="1F4E79")   # azul oscuro
-fill_header = PatternFill("solid", fgColor="D9E1F2")  # azul claro
+fill_header = PatternFill("solid", fgColor="D9E1F2")   # azul claro
 
 
 font_title = Font(bold=True, size=18, color="FFFFFF")
@@ -144,10 +144,6 @@ cell.fill = fill_title
 cell.alignment = center
 
 ws.row_dimensions[1].height = 30
-
-# ---------------------------
-# FILA VACÍA
-# ---------------------------
 
 # ---------------------------
 # GRUPOS
@@ -206,10 +202,6 @@ for col, grupo in enumerate(grupos_ordenados, start=1):
     ws.cell(row=7, column=col).value = siervo
 
 # ---------------------------
-# SEPARACIÓN VISUAL
-# ---------------------------
-
-# ---------------------------
 # MIEMBROS
 # ---------------------------
 fila_inicio = 9
@@ -249,7 +241,7 @@ for col_idx, col in enumerate(ws.iter_cols(min_row=3), start=1):
         if cell.value:
             max_length = max(max_length, len(str(cell.value)))
 
-    ws.column_dimensions[col_letter].width = (max_length ) 
+    ws.column_dimensions[col_letter].width = (max_length) 
 
 # ---------------------------
 # CONGELAR PANELES
